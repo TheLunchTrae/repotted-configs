@@ -31,8 +31,6 @@ actions:
   default_workflow_permissions: read
   can_approve_pull_request_reviews: false
   approval_policy: all_external_contributors
-  artifact_and_log_retention:
-    days: 90
   oidc_customization_sub:
     use_default: true
     use_immutable_subject: true
@@ -45,14 +43,6 @@ security:
   vulnerability_alerts: false
   automated_security_fixes: false
   private_vulnerability_reporting: false
-  code_scanning_default_setup:
-    state: not-configured
-    runner_type: standard
-    runner_label: null
-    query_suite: default
-    threat_model: remote
-  code_scanning_ai_scan:
-    pr_scan: disabled
 rulesets:
   - name: Allow Merge
     target: branch
@@ -90,11 +80,6 @@ rulesets:
         include:
           - ~DEFAULT_BRANCH
     rules:
-      - type: required_status_checks
-        parameters:
-          strict_required_status_checks_policy: false
-          do_not_enforce_on_create: false
-          required_status_checks: []
       - type: pull_request
         parameters:
           required_approving_review_count: 0
@@ -106,5 +91,11 @@ rulesets:
           require_extra_approval_for_unattributed_changes: true
           allowed_merge_methods:
             - squash
-      - type: deletion
-      - type: creation
+  - name: Main
+    target: branch
+    enforcement: active
+    conditions:
+      ref_name:
+        include:
+          - ~DEFAULT_BRANCH
+        exclude: []
