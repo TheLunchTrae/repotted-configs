@@ -7,13 +7,17 @@
   ],
   "repository-folders": [
     {
-      "name": "Personal Configs",
+      "name": "Apps",
       "repositories": [
         "TheLunchTrae/ide-configs",
         "TheLunchTrae/opencode-configs",
         "TheLunchTrae/claude-code-configs",
         "TheLunchTrae/kilo-configs"
       ]
+    },
+    {
+      "name": "Personal Configs",
+      "repositories": []
     }
   ]
 }
