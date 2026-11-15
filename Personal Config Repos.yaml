@@ -91,11 +91,3 @@ rulesets:
           require_extra_approval_for_unattributed_changes: true
           allowed_merge_methods:
             - squash
-  - name: Main
-    target: branch
-    enforcement: active
-    conditions:
-      ref_name:
-        include:
-          - ~DEFAULT_BRANCH
-        exclude: []
