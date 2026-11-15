@@ -8,7 +8,10 @@
   "repository-folders": [
     {
       "name": "Apps",
-      "repositories": []
+      "repositories": [
+        "TheLunchTrae/appy-tappy",
+        "TheLunchTrae/repotted"
+      ]
     },
     {
       "name": "Personal Configs",
