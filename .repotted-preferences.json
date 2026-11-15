@@ -4,5 +4,16 @@
     "thelunchtrae/chillenium",
     "thelunchtrae/food-truck-project-group2",
     "thelunchtrae/kapu"
+  ],
+  "repository-folders": [
+    {
+      "name": "Personal Configs",
+      "repositories": [
+        "TheLunchTrae/ide-configs",
+        "TheLunchTrae/opencode-configs",
+        "TheLunchTrae/claude-code-configs",
+        "TheLunchTrae/kilo-configs"
+      ]
+    }
   ]
 }
