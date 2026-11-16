@@ -1,0 +1,294 @@
+owner_type: user
+repository:
+  default_branch: main
+  is_template: false
+  has_issues: true
+  has_projects: false
+  has_wiki: true
+  has_discussions: false
+  has_pull_requests: true
+  pull_request_creation_policy: all
+  allow_auto_merge: true
+  allow_update_branch: true
+  delete_branch_on_merge: true
+  web_commit_signoff_required: true
+  immutable_releases: true
+  pull_request_creation_cap:
+    enabled: false
+    max_open_pull_requests: 1
+    include_drafts: false
+merge:
+  allow_merge_commit: false
+  allow_squash_merge: true
+  allow_rebase_merge: false
+  merge_commit_title: MERGE_MESSAGE
+  merge_commit_message: PR_TITLE
+  squash_merge_commit_title: PR_TITLE
+  squash_merge_commit_message: PR_BODY
+actions:
+  enabled: true
+  allowed_actions: selected
+  sha_pinning_required: true
+  selected_actions:
+    github_owned_allowed: false
+    verified_allowed: false
+    patterns_allowed:
+      - actions/attest@*
+      - actions/checkout@*
+      - actions/download-artifact@*
+      - actions/upload-artifact@*
+      - jdx/mise-action@*
+      - actions/cache@*
+      - actions/cache/restore@*
+      - actions/cache/save@*
+  default_workflow_permissions: read
+  can_approve_pull_request_reviews: false
+  approval_policy: all_external_contributors
+  artifact_and_log_retention:
+    days: 90
+  oidc_customization_sub:
+    use_default: true
+    use_immutable_subject: true
+security:
+  security_and_analysis:
+    secret_scanning:
+      status: enabled
+    secret_scanning_push_protection:
+      status: enabled
+  vulnerability_alerts: true
+  automated_security_fixes: true
+  private_vulnerability_reporting: true
+  code_scanning_default_setup:
+    state: not-configured
+    runner_type: standard
+    runner_label: null
+    query_suite: default
+    threat_model: remote
+  code_scanning_ai_scan:
+    pr_scan: disabled
+rulesets:
+  - name: "Main: Block Creation and Deletion"
+    target: branch
+    enforcement: active
+    bypass_actors: []
+    conditions:
+      ref_name:
+        exclude: []
+        include:
+          - ~DEFAULT_BRANCH
+    rules:
+      - type: creation
+      - type: deletion
+  - name: "Main: Block Force Pushes"
+    target: branch
+    enforcement: active
+    bypass_actors: []
+    conditions:
+      ref_name:
+        exclude: []
+        include:
+          - ~DEFAULT_BRANCH
+    rules:
+      - type: non_fast_forward
+  - name: "Main: Require Approval"
+    target: branch
+    enforcement: active
+    bypass_actors:
+      - actor_id: 5
+        actor_type: RepositoryRole
+        bypass_mode: exempt
+    conditions:
+      ref_name:
+        exclude: []
+        include:
+          - ~DEFAULT_BRANCH
+    rules:
+      - type: pull_request
+        parameters:
+          required_approving_review_count: 1
+          dismiss_stale_reviews_on_push: false
+          required_reviewers: []
+          require_code_owner_review: false
+          require_last_push_approval: false
+          required_review_thread_resolution: false
+          require_extra_approval_for_unattributed_changes: true
+          allowed_merge_methods:
+            - merge
+            - squash
+            - rebase
+  - name: "Main: Require Code Owner Review"
+    target: branch
+    enforcement: active
+    bypass_actors:
+      - actor_id: 5
+        actor_type: RepositoryRole
+        bypass_mode: exempt
+    conditions:
+      ref_name:
+        exclude: []
+        include:
+          - ~DEFAULT_BRANCH
+    rules:
+      - type: pull_request
+        parameters:
+          required_approving_review_count: 0
+          dismiss_stale_reviews_on_push: false
+          required_reviewers: []
+          require_code_owner_review: true
+          require_last_push_approval: false
+          required_review_thread_resolution: false
+          require_extra_approval_for_unattributed_changes: true
+          allowed_merge_methods:
+            - merge
+            - squash
+            - rebase
+  - name: "Main: Require PR"
+    target: branch
+    enforcement: active
+    bypass_actors: []
+    conditions:
+      ref_name:
+        exclude: []
+        include:
+          - ~DEFAULT_BRANCH
+    rules:
+      - type: pull_request
+        parameters:
+          required_approving_review_count: 0
+          dismiss_stale_reviews_on_push: false
+          required_reviewers: []
+          require_code_owner_review: false
+          require_last_push_approval: false
+          required_review_thread_resolution: false
+          require_extra_approval_for_unattributed_changes: true
+          allowed_merge_methods:
+            - squash
+  - name: "Main: Require Status Checks"
+    target: branch
+    enforcement: active
+    bypass_actors:
+      - actor_id: 5
+        actor_type: RepositoryRole
+        bypass_mode: exempt
+    conditions:
+      ref_name:
+        exclude: []
+        include:
+          - ~DEFAULT_BRANCH
+    rules:
+      - type: required_status_checks
+        parameters:
+          strict_required_status_checks_policy: false
+          do_not_enforce_on_create: false
+          required_status_checks:
+            - context: quality
+            - context: windows
+  - name: "Tags: Restrict creation"
+    target: tag
+    enforcement: active
+    bypass_actors: []
+    conditions:
+      ref_name:
+        exclude:
+          - refs/tags/v*
+        include:
+          - ~ALL
+    rules:
+      - type: creation
+  - name: "Tags: Restrict updates and deletion"
+    target: tag
+    enforcement: active
+    bypass_actors: []
+    conditions:
+      ref_name:
+        exclude: []
+        include:
+          - ~ALL
+    rules:
+      - type: update
+      - type: deletion
+      - type: non_fast_forward
+environments:
+  - name: release
+    wait_timer: 0
+    prevent_self_review: false
+    reviewers: []
+    deployment_branch_policy:
+      protected_branches: false
+      custom_branch_policies: true
+    branch_policies:
+      - name: main
+        type: branch
+labels:
+  - name: accessibility
+    color: f143ab
+    description: Barrier affecting people with disabilities
+  - name: actions
+    color: d93f0b
+    description: Things the runtime does
+  - name: bug
+    color: d73a4a
+    description: Something isn't working
+  - name: config
+    color: 0e8a16
+    description: App definitions and compiled config
+  - name: dependencies
+    color: 0366d6
+    description: Pull requests that update a dependency file
+  - name: documentation
+    color: 0075ca
+    description: Improvements or additions to documentation
+  - name: duplicate
+    color: cfd3d7
+    description: This issue or pull request already exists
+  - name: enhancement
+    color: a2eeef
+    description: New feature or request
+  - name: github_actions
+    color: "000000"
+    description: Pull requests that update GitHub Actions code
+  - name: good first issue
+    color: 7057ff
+    description: Good for newcomers
+  - name: help wanted
+    color: "008672"
+    description: Extra attention is needed
+  - name: invalid
+    color: e4e669
+    description: This doesn't seem right
+  - name: javascript
+    color: "168700"
+    description: Pull requests that update javascript code
+  - name: "priority: high"
+    color: ef03fa
+    description: ""
+  - name: "priority: low"
+    color: 5f751d
+    description: ""
+  - name: "priority: medium"
+    color: f88ebc
+    description: ""
+  - name: question
+    color: d876e3
+    description: Further information is requested
+  - name: runtime
+    color: 1d76db
+    description: Always-on background runtime
+  - name: rust
+    color: "000000"
+    description: Pull requests that update rust code
+  - name: setup-app
+    color: "5319e7"
+    description: Setup app and discovery
+  - name: sources
+    color: 006b75
+    description: Ways of reading app state
+  - name: spike
+    color: bfdadc
+    description: Research that settles a design question
+  - name: ui
+    color: f9d0c4
+    description: User interface
+  - name: wontfix
+    color: ffffff
+    description: This will not be worked on
