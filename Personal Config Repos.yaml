@@ -40,9 +40,16 @@ security:
       status: enabled
     secret_scanning_push_protection:
       status: enabled
-  vulnerability_alerts: false
-  automated_security_fixes: false
+  vulnerability_alerts: true
+  automated_security_fixes: true
   private_vulnerability_reporting: false
+  dependabot_runner_settings:
+    runner_type: standard
+  code_scanning_default_setup:
+    state: configured
+    query_suite: default
+    threat_model: remote
+    runner_type: standard
 rulesets:
   - name: Allow Merge
     target: branch
