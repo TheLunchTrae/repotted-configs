@@ -35,6 +35,8 @@ actions:
     github_owned_allowed: false
     verified_allowed: false
   access_level: none
+  artifact_and_log_retention:
+    days: 30
 security:
   security_and_analysis:
     secret_scanning:
