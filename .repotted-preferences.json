@@ -21,10 +21,6 @@
         "TheLunchTrae/claude-code-configs",
         "TheLunchTrae/kilo-configs"
       ]
-    },
-    {
-      "name": "Test",
-      "repositories": []
     }
   ]
 }
