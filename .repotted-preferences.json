@@ -54,6 +54,15 @@
           "version": "07a9c654fab79071db177b73bad6cb0f7ec5a13431ce92253c161431e5a4d86d"
         }
       ]
+    },
+    "thelunchtrae/kilo-configs": {
+      "profiles": [],
+      "applied": [
+        {
+          "profile": "Personal Config Repos.yaml",
+          "version": "07a9c654fab79071db177b73bad6cb0f7ec5a13431ce92253c161431e5a4d86d"
+        }
+      ]
     }
   }
 }
