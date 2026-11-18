@@ -32,7 +32,7 @@ actions:
     use_immutable_subject: true
   allowed_actions: selected
   selected_actions:
-    github_owned_allowed: false
+    github_owned_allowed: true
     verified_allowed: false
   access_level: none
   artifact_and_log_retention:
