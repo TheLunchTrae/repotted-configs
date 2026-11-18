@@ -20,7 +20,11 @@
         "TheLunchTrae/opencode-configs",
         "TheLunchTrae/claude-code-configs",
         "TheLunchTrae/kilo-configs"
-      ]
+      ],
+      "profiles": [
+        "Personal Config Repos.yaml"
+      ],
+      "applyProfilesOnMove": true
     }
   ]
 }
