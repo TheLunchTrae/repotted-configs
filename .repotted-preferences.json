@@ -57,6 +57,11 @@
     },
     "thelunchtrae/ide-configs": {
       "profiles": [],
+      "authoritative": [
+        "actions_policies",
+        "rulesets",
+        "environments"
+      ],
       "applied": [
         {
           "profile": "Personal Config Repos.yaml",
